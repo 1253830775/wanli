@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 740" width="960" height="740">
+<style>
+text { font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif; }
+.title { font-size: 20px; font-weight: 600; fill: #111827; }
+.layer-label { font-size: 13px; font-weight: 600; fill: #374151; }
+.node-label { font-size: 13px; font-weight: 600; fill: #111827; text-anchor: middle; }
+.node-sublabel { font-size: 11px; fill: #6b7280; text-anchor: middle; }
+.legend-text { font-size: 12px; fill: #6b7280; }
+</style>
+<defs>
+<marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+</marker>
+<marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+</marker>
+<marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#9333ea"/>
+</marker>
+<filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.08"/>
+</filter>
+</defs>
+<rect width="960" height="740" fill="#ffffff"/>
+<text x="480" y="32" class="title" text-anchor="middle">AI 万历穿越文字冒险 — 系统架构图</text>
+<rect x="30" y="60" width="900" height="120" rx="6" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="6,4"/>
+<rect x="30" y="60" width="120" height="22" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="90" y="74" class="layer-label" text-anchor="middle">展示层 (Vue / React)</text>
+<rect x="60" y="98" width="190" height="60" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="155" y="120" class="node-label">叙事流渲染</text>
+<text x="155" y="142" class="node-sublabel">SSE 流式逐 token 展示</text>
+<rect x="280" y="98" width="190" height="60" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="375" y="120" class="node-label">@NPC 交互输入</text>
+<text x="375" y="142" class="node-sublabel">自由文本 + 场景角色清单</text>
+<rect x="500" y="98" width="190" height="60" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="595" y="120" class="node-label">世界状态面板</text>
+<text x="595" y="142" class="node-sublabel">国库 / 民望 / 忠诚度</text>
+<rect x="720" y="98" width="190" height="60" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="815" y="120" class="node-label">因果事件日志</text>
+<text x="815" y="142" class="node-sublabel">蝴蝶效应可视化</text>
+<rect x="30" y="210" width="900" height="120" rx="6" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="6,4"/>
+<rect x="30" y="210" width="155" height="22" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="107" y="224" class="layer-label" text-anchor="middle">业务层 (Java / Spring Boot)</text>
+<rect x="60" y="248" width="190" height="60" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="155" y="270" class="node-label">SSE / WebSocket</text>
+<text x="155" y="292" class="node-sublabel">流式响应推送</text>
+<rect x="280" y="248" width="190" height="60" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="375" y="270" class="node-label">命令解析器</text>
+<text x="375" y="292" class="node-sublabel">玩家输入意图识别</text>
+<rect x="500" y="248" width="190" height="60" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="595" y="270" class="node-label">会话管理器</text>
+<text x="595" y="292" class="node-sublabel">世界线状态快照</text>
+<rect x="720" y="248" width="190" height="60" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="815" y="270" class="node-label">上下文组装器</text>
+<text x="815" y="292" class="node-sublabel">图谱 + 人格 + 状态注入</text>
+<rect x="30" y="360" width="900" height="120" rx="6" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="6,4"/>
+<rect x="30" y="360" width="120" height="22" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="90" y="374" class="layer-label" text-anchor="middle">AI 编排层</text>
+<rect x="60" y="398" width="190" height="60" rx="6" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="155" y="420" class="node-label">LLM 客户端</text>
+<text x="155" y="442" class="node-sublabel">DeepSeek / Kimi 2.6</text>
+<rect x="280" y="398" width="190" height="60" rx="6" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="375" y="420" class="node-label">Prompt 构建器</text>
+<text x="375" y="442" class="node-sublabel">Persona + 因果链注入</text>
+<rect x="500" y="398" width="190" height="60" rx="6" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="595" y="420" class="node-label">知识图谱查询</text>
+<text x="595" y="442" class="node-sublabel">子图检索 (Top 50)</text>
+<rect x="720" y="398" width="190" height="60" rx="6" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="815" y="420" class="node-label">NPC 人格管理器</text>
+<text x="815" y="442" class="node-sublabel">态度演化 + 知识边界</text>
+<rect x="30" y="510" width="900" height="130" rx="6" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="6,4"/>
+<rect x="30" y="510" width="175" height="22" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+<text x="117" y="524" class="layer-label" text-anchor="middle">数据层 (PostgreSQL + pgvector)</text>
+<rect x="60" y="548" width="190" height="64" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="155" y="574" class="node-label">知识图谱</text>
+<text x="155" y="596" class="node-sublabel">实体 / 关系 / 因果事件</text>
+<rect x="280" y="548" width="190" height="64" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="375" y="574" class="node-label">世界状态库</text>
+<text x="375" y="596" class="node-sublabel">JSON 快照 + 增量</text>
+<rect x="500" y="548" width="190" height="64" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="595" y="574" class="node-label">NPC 档案库</text>
+<text x="595" y="596" class="node-sublabel">人格 + 态度 + 记忆</text>
+<rect x="720" y="548" width="190" height="64" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="815" y="574" class="node-label">会话历史库</text>
+<text x="815" y="596" class="node-sublabel">短期窗口 + 向量化</text>
+<line x1="155" y1="158" x2="155" y2="210" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="375" y1="158" x2="375" y2="210" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="595" y1="158" x2="595" y2="210" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="815" y1="158" x2="815" y2="210" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="155" y1="308" x2="155" y2="360" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="375" y1="308" x2="375" y2="360" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="595" y1="308" x2="595" y2="360" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="815" y1="308" x2="815" y2="360" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<line x1="155" y1="458" x2="155" y2="510" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<line x1="155" y1="510" x2="155" y2="462" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+<line x1="375" y1="458" x2="375" y2="510" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<line x1="375" y1="510" x2="375" y2="462" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+<line x1="595" y1="458" x2="595" y2="510" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<line x1="595" y1="510" x2="595" y2="462" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+<line x1="815" y1="458" x2="815" y2="510" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<line x1="815" y1="510" x2="815" y2="462" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+<circle cx="38" cy="25" r="10" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+<path d="M30 40 Q38 32 46 40" stroke="#9ca3af" stroke-width="1.5" fill="none"/>
+<text x="54" y="30" font-size="12" fill="#6b7280">玩家</text>
+<g transform="translate(30, 670)">
+<rect x="0" y="0" width="220" height="55" rx="4" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+<text x="10" y="16" font-size="12" font-weight="600" fill="#374151">图例</text>
+<line x1="10" y1="30" x2="36" y2="30" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<text x="42" y="34" class="legend-text">请求 / 数据流</text>
+<line x1="10" y1="44" x2="36" y2="44" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<text x="42" y="48" class="legend-text">写入 / 存储</text>
+</g>
+<g transform="translate(280, 670)">
+<rect x="0" y="0" width="200" height="55" rx="4" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+<text x="10" y="16" font-size="12" font-weight="600" fill="#374151">关系</text>
+<line x1="10" y1="30" x2="36" y2="30" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+<text x="42" y="34" class="legend-text">读取 / 检索</text>
+<rect x="10" y="38" width="8" height="8" rx="2" fill="#eff6ff" stroke="#bfdbfe"/>
+<text x="24" y="46" class="legend-text">展示层组件</text>
+</g>
+<g transform="translate(520, 670)">
+<rect x="0" y="0" width="200" height="55" rx="4" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+<rect x="10" y="24" width="8" height="8" rx="2" fill="#f0fdf4" stroke="#bbf7d0"/>
+<text x="24" y="32" class="legend-text">业务层组件</text>
+<rect x="10" y="38" width="8" height="8" rx="2" fill="#faf5ff" stroke="#e9d5ff"/>
+<text x="24" y="46" class="legend-text">AI 编排层组件</text>
+</g>
+</svg>
