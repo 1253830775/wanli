@@ -39,8 +39,8 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ state }) => {
         <Meter value={state.publicSupport} color="#2f9e5d" />
       </div>
       <div className="stat-row">
-        <span className="stat-label">军心</span>
-        <Meter value={state.militaryLoyalty} color="#a72d1e" />
+        <span className="stat-label">帝威</span>
+        <Meter value={state.imperialAuthority} color="#c07728" />
       </div>
       <div className="stat-row">
         <span className="stat-label">所在</span>

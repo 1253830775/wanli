@@ -24,10 +24,15 @@ public class WorldStateService {
     }
 
     public WorldStateDTO toDTO(WorldState ws) {
-        return new WorldStateDTO(
-            ws.getYear(), ws.getEraName(), ws.getTreasury(),
-            ws.getPublicSupport(), ws.getMilitaryLoyalty(), ws.getPlayerLocation()
-        );
+        WorldStateDTO dto = new WorldStateDTO();
+        dto.setYear(ws.getYear());
+        dto.setEraName(ws.getEraName());
+        dto.setTreasury(ws.getTreasury());
+        dto.setPublicSupport(ws.getPublicSupport());
+        dto.setMilitaryLoyalty(ws.getMilitaryLoyalty());
+        dto.setImperialAuthority(ws.getImperialAuthority());
+        dto.setPlayerLocation(ws.getPlayerLocation());
+        return dto;
     }
 
     public void saveState(String sessionId, int round, WorldStateDTO dto) {
@@ -39,6 +44,7 @@ public class WorldStateService {
         ws.setTreasury(dto.getTreasury());
         ws.setPublicSupport(dto.getPublicSupport());
         ws.setMilitaryLoyalty(dto.getMilitaryLoyalty());
+        ws.setImperialAuthority(dto.getImperialAuthority());
         ws.setPlayerLocation(dto.getPlayerLocation());
         try {
             ws.setStateJson(objectMapper.writeValueAsString(dto));
@@ -48,12 +54,31 @@ public class WorldStateService {
         wsRepo.save(ws);
     }
 
+    public void saveState(String sessionId, int round, WorldState ws) {
+        WorldState newState = new WorldState();
+        newState.setSessionId(sessionId);
+        newState.setRoundNumber(round);
+        newState.setYear(ws.getYear());
+        newState.setEraName(ws.getEraName());
+        newState.setTreasury(ws.getTreasury());
+        newState.setPublicSupport(ws.getPublicSupport());
+        newState.setMilitaryLoyalty(ws.getMilitaryLoyalty());
+        newState.setImperialAuthority(ws.getImperialAuthority());
+        newState.setPlayerLocation(ws.getPlayerLocation());
+        try {
+            newState.setStateJson(objectMapper.writeValueAsString(newState));
+        } catch (Exception e) {
+            // ignore
+        }
+        wsRepo.save(newState);
+    }
+
     public String buildStateContext(String sessionId) {
         return getLatestState(sessionId)
             .map(ws -> String.format(
-                "当前世界状态：\n- 年份: %d年 (%s)\n- 国库: %d两\n- 民望: %d\n- 军队忠诚度: %d\n- 当前位置: %s\n",
+                "--- 世界状态 ---\n- 纪年：%d年 · %s\n- 国库：%d 两\n- 民望：%d\n- 帝威：%d\n- 所在：%s\n",
                 ws.getYear(), ws.getEraName(), ws.getTreasury(),
-                ws.getPublicSupport(), ws.getMilitaryLoyalty(), ws.getPlayerLocation()))
+                ws.getPublicSupport(), ws.getImperialAuthority(), ws.getPlayerLocation()))
             .orElse("世界状态：游戏中尚未记录\n");
     }
 }
