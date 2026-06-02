@@ -38,6 +38,9 @@ public class WorldState {
     @Column(name = "military_loyalty")
     private Integer militaryLoyalty;
 
+    @Column(name = "imperial_authority")
+    private Integer imperialAuthority;
+
     @Column(name = "player_location")
     private String playerLocation;
 

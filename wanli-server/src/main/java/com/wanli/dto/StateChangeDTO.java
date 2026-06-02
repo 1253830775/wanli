@@ -3,16 +3,15 @@ package com.wanli.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorldStateDTO {
-    private Integer year;
-    private String eraName;
+public class StateChangeDTO {
     private Long treasury;
     private Integer publicSupport;
-    private Integer militaryLoyalty;
     private Integer imperialAuthority;
-    private String playerLocation;
+    private Map<String, Integer> npcAttitudes;
+    private Map<String, Integer> npcRelations;
 }

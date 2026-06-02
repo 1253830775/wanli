@@ -10,45 +10,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "npc_profiles")
-public class NpcProfile {
+@Table(name = "court_session_states")
+public class CourtSessionState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "npc_id", nullable = false)
-    private String npcId;
-
-    @Column(nullable = false)
-    private String name;
-
     @Column(name = "session_id", nullable = false)
     private String sessionId;
 
-    @Column(columnDefinition = "TEXT")
-    private String traits;
+    @Column(name = "court_number", nullable = false)
+    private Integer courtNumber;
 
-    @Column(name = "knowledge_boundary", columnDefinition = "TEXT")
-    private String knowledgeBoundary;
+    @Column(name = "phase", nullable = false)
+    private String phase;
 
-    @Column(name = "attitude_json", columnDefinition = "TEXT")
-    private String attitudeJson;
+    @Column(name = "current_topic_index", nullable = false)
+    private Integer currentTopicIndex;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "topics_json", columnDefinition = "TEXT")
+    private String topicsJson;
 
-    @Column(name = "faction")
-    private String faction;
+    @Column(name = "inquiry_count", nullable = false)
+    private Integer inquiryCount;
 
-    @Column(name = "relations", columnDefinition = "TEXT")
-    private String relations;
-
-    @Column(name = "alive")
-    private Boolean alive;
-
-    @Column(name = "historical_death_year")
-    private Integer historicalDeathYear;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
