@@ -3,13 +3,11 @@ package com.wanli.service;
 import com.wanli.dto.WorldStateDTO;
 import com.wanli.model.GameSession;
 import com.wanli.model.NpcProfile;
-import com.wanli.model.WorldState;
 import com.wanli.repository.GameSessionRepository;
 import com.wanli.repository.NpcProfileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,17 +18,20 @@ public class GameService {
     private final WorldStateService wsService;
     private final KnowledgeGraphService kgService;
     private final NpcProfileRepository npcProfileRepo;
+    private final EventNodeService eventNodeService;
 
     public GameService(GameSessionRepository sessionRepo,
                         NpcService npcService,
                         WorldStateService wsService,
                         KnowledgeGraphService kgService,
-                        NpcProfileRepository npcProfileRepo) {
+                        NpcProfileRepository npcProfileRepo,
+                        EventNodeService eventNodeService) {
         this.sessionRepo = sessionRepo;
         this.npcService = npcService;
         this.wsService = wsService;
         this.kgService = kgService;
         this.npcProfileRepo = npcProfileRepo;
+        this.eventNodeService = eventNodeService;
     }
 
     @Transactional
@@ -55,6 +56,7 @@ public class GameService {
         startingState.setMilitaryLoyalty(70);
         startingState.setPlayerLocation("乾清宫");
         wsService.saveState(sessionId, 0, startingState);
+        eventNodeService.initializeSession(sessionId);
 
         return session;
     }

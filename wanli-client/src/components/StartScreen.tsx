@@ -13,59 +13,30 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      backgroundColor: '#0f172a',
-      color: '#f1f5f9'
-    }}>
-      <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h1 style={{ fontSize: 36, margin: 0, letterSpacing: 4, fontWeight: 200 }}>
-          万 历 穿 越
-        </h1>
-        <p style={{ fontSize: 14, color: '#94a3b8', marginTop: 12 }}>
-          AI 驱动的历史穿越文字冒险
+    <main className="start-screen">
+      <section className="start-card">
+        <div className="start-eyebrow">AI HISTORICAL ADVENTURE</div>
+        <h1>万历穿越</h1>
+        <p className="start-subtitle">
+          你将以十岁天子的身份醒在乾清宫，在高拱、张居正、冯保与两宫皇太后之间，
+          用现代知识改写大明的权力节点。
         </p>
-      </div>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 320 }}>
-        <input
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="输入你的名字……"
-          style={{
-            padding: '12px 16px',
-            borderRadius: 8,
-            border: '1px solid #334155',
-            backgroundColor: '#1e293b',
-            color: '#f1f5f9',
-            fontSize: 16,
-            outline: 'none',
-            textAlign: 'center'
-          }}
-        />
-        <button
-          type="submit"
-          disabled={!name.trim()}
-          style={{
-            padding: '12px',
-            borderRadius: 8,
-            border: 'none',
-            backgroundColor: name.trim() ? '#2563eb' : '#475569',
-            color: '#fff',
-            fontSize: 16,
-            fontWeight: 600,
-            cursor: name.trim() ? 'pointer' : 'not-allowed'
-          }}
-        >
-          踏入大明
-        </button>
-      </form>
-      <p style={{ fontSize: 12, color: '#64748b', marginTop: 32, maxWidth: 360, textAlign: 'center', lineHeight: 1.6 }}>
-        你将穿越成明神宗朱翊钧，从隆庆帝托孤开始，凭借现代知识改变历史走向。
-      </p>
-    </div>
+        <form className="start-form" onSubmit={handleSubmit}>
+          <input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="输入你的名字……"
+            aria-label="玩家姓名"
+          />
+          <button className="primary-button" type="submit" disabled={!name.trim()}>
+            踏入大明
+          </button>
+        </form>
+        <p className="start-note">
+          事件会以“节点”推进：例如上朝会开启朝会节点，完成奏对、定夺议题后，
+          输入“宣布退朝/结束朝会”即可触发节点收束。
+        </p>
+      </section>
+    </main>
   );
 };

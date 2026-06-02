@@ -2,8 +2,6 @@ package com.wanli.controller;
 
 import com.wanli.dto.*;
 import com.wanli.model.GameSession;
-import com.wanli.model.NpcProfile;
-import com.wanli.model.WorldState;
 import com.wanli.service.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +20,18 @@ public class GameController {
     private final NarrativeService narrativeService;
     private final WorldStateService wsService;
     private final NpcService npcService;
+    private final EventNodeService eventNodeService;
 
     public GameController(GameService gameService,
                            NarrativeService narrativeService,
                            WorldStateService wsService,
-                           NpcService npcService) {
+                           NpcService npcService,
+                           EventNodeService eventNodeService) {
         this.gameService = gameService;
         this.narrativeService = narrativeService;
         this.wsService = wsService;
         this.npcService = npcService;
+        this.eventNodeService = eventNodeService;
     }
 
     @PostMapping("/session")
@@ -39,7 +40,9 @@ public class GameController {
         return new CreateSessionResponse(session.getSessionId(),
             "欢迎来到大明！你已穿越成明神宗朱翊钧。\n" +
             "隆庆六年（1572 年），先帝病重，召你与顾命大臣于乾清宫……\n" +
-            "输入你的第一个行动开始冒险。");
+            "事件节点会记录触发与收束：输入“上朝”开启朝会，输入“宣布退朝/结束朝会”完成节点。",
+            eventNodeService.getActiveEvent(session.getSessionId()).orElse(null),
+            wsService.getLatestState(session.getSessionId()).map(wsService::toDTO).orElse(new WorldStateDTO()));
     }
 
     @PostMapping(value = "/narrate", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

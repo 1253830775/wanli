@@ -7,6 +7,18 @@ export interface WorldState {
   playerLocation: string;
 }
 
+export interface EventNode {
+  id: string;
+  title: string;
+  description: string;
+  status: 'available' | 'active' | 'completed';
+  currentStep: number;
+  steps: string[];
+  quickActions: string[];
+  triggerHint: string;
+  completionHint: string;
+}
+
 export interface NpcBrief {
   id: string;
   name: string;
@@ -21,6 +33,7 @@ export interface NarrativeEvent {
   token?: string;
   worldState?: WorldState;
   sceneCharacters?: string[];
+  activeEvent?: EventNode;
   error?: string;
 }
 
@@ -37,4 +50,6 @@ export interface CreateSessionRequest {
 export interface CreateSessionResponse {
   sessionId: string;
   message: string;
+  activeEvent?: EventNode;
+  worldState?: WorldState;
 }
