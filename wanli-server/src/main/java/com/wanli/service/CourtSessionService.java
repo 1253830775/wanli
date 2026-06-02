@@ -121,7 +121,7 @@ public class CourtSessionService {
     public String buildCourtContext(String sessionId) {
         Optional<CourtSessionState> opt = getActiveSession(sessionId);
         if (opt.isEmpty()) {
-            return "当前状态：非朝会时间。玩家可输入"上朝"开启朝会。\n";
+            return "当前状态：非朝会时间。玩家可输入“上朝”开启朝会。\n";
         }
 
         CourtSessionState state = opt.get();

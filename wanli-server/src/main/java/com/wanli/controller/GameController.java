@@ -40,7 +40,7 @@ public class GameController {
         return new CreateSessionResponse(session.getSessionId(),
             "你以十岁天子的身份醒在乾清宫。\n" +
             "隆庆六年（1572 年），先帝病重托孤，顾命大臣与司礼监都在等待新君的态度。\n" +
-            "输入"上朝"开启第一次朝会，在高拱、张居正、冯保之间做出你的第一个决策。",
+            "输入“上朝”开启第一次朝会，在高拱、张居正、冯保之间做出你的第一个决策。",
             null,
             wsService.getLatestState(session.getSessionId()).map(wsService::toDTO).orElse(new WorldStateDTO()));
     }
