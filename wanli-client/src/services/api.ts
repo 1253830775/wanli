@@ -23,7 +23,7 @@ export async function createSession(playerName: string): Promise<CreateSessionRe
 export function streamNarrative(
   input: PlayerInput,
   onToken: (token: string) => void,
-  onState: (state: WorldState, characters: string[]) => void,
+  onState: (state: WorldState, characters: string[], activeEvent?: NarrativeEvent['activeEvent']) => void,
   onDone: () => void,
   onError: (err: string) => void
 ): AbortController {
@@ -59,7 +59,7 @@ export function streamNarrative(
               break;
             case 'state':
               if (event.worldState && event.sceneCharacters) {
-                onState(event.worldState, event.sceneCharacters);
+                onState(event.worldState, event.sceneCharacters, event.activeEvent);
               }
               break;
             case 'done':

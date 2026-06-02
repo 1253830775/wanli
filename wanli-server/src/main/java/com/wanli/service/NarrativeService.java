@@ -21,19 +21,22 @@ public class NarrativeService {
     private final WorldStateService wsService;
     private final KnowledgeGraphService kgService;
     private final NpcService npcService;
+    private final EventNodeService eventNodeService;
 
     public NarrativeService(GameSessionRepository sessionRepo,
                              LLMClient llmClient,
                              ContextAssembler contextAssembler,
                              WorldStateService wsService,
                              KnowledgeGraphService kgService,
-                             NpcService npcService) {
+                             NpcService npcService,
+                             EventNodeService eventNodeService) {
         this.sessionRepo = sessionRepo;
         this.llmClient = llmClient;
         this.contextAssembler = contextAssembler;
         this.wsService = wsService;
         this.kgService = kgService;
         this.npcService = npcService;
+        this.eventNodeService = eventNodeService;
     }
 
     public Flux<NarrativeEvent> generateNarrative(String sessionId, String playerInput, String targetNpc) {
@@ -43,6 +46,7 @@ public class NarrativeService {
 
             String history = session.getNarrativeHistory() != null ? session.getNarrativeHistory() : "";
             int newRound = session.getCurrentRound() + 1;
+            var eventNode = eventNodeService.advanceByInput(sessionId, playerInput);
 
             // Emit world state header
             wsService.getLatestState(sessionId).ifPresent(ws -> {
@@ -55,6 +59,7 @@ public class NarrativeService {
                 header.setSceneCharacters(sceneNpcs.stream()
                     .map(n -> "@" + n.getName())
                     .collect(Collectors.toList()));
+                header.setActiveEvent(eventNode);
 
                 sink.next(header);
             });

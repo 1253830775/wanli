@@ -19,9 +19,10 @@ export const InputBox: React.FC<InputBoxProps> = ({ onSend, disabled, sceneChara
 
   const insertNpc = (name: string) => {
     setText(prev => {
+      const cleanName = name.replace('@', '');
       const atIdx = prev.lastIndexOf('@');
-      if (atIdx >= 0) return prev.slice(0, atIdx) + `@${name} `;
-      return prev + `@${name} `;
+      if (atIdx >= 0) return prev.slice(0, atIdx) + `@${cleanName} `;
+      return prev + `@${cleanName} `;
     });
     setShowNpcs(false);
   };
@@ -33,79 +34,34 @@ export const InputBox: React.FC<InputBoxProps> = ({ onSend, disabled, sceneChara
   };
 
   return (
-    <div style={{ position: 'relative' }}>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8 }}>
-        <div style={{ position: 'relative', flex: 1 }}>
+    <section className="command-deck">
+      <form className="command-form" onSubmit={handleSubmit}>
+        <div className="command-input-wrap">
           <input
+            className="command-input"
             value={text}
             onChange={e => {
               setText(e.target.value);
-              if (e.target.value.endsWith('@')) setShowNpcs(true);
+              setShowNpcs(e.target.value.endsWith('@'));
             }}
             onKeyDown={handleKeyDown}
-            placeholder="输入你的行动… 输入 @ 选择 NPC"
+            placeholder="输入行动：召见张居正 / 上朝 / 宣布退朝…… 输入 @ 选择 NPC"
             disabled={disabled}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: '1px solid #d1d5db',
-              fontSize: '14px',
-              outline: 'none',
-              boxSizing: 'border-box',
-              backgroundColor: disabled ? '#f3f4f6' : '#fff'
-            }}
           />
           {showNpcs && sceneCharacters.length > 0 && (
-            <div style={{
-              position: 'absolute',
-              bottom: '100%',
-              left: 0,
-              right: 0,
-              backgroundColor: '#fff',
-              border: '1px solid #d1d5db',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-              zIndex: 10,
-              maxHeight: 200,
-              overflowY: 'auto'
-            }}>
+            <div className="npc-menu">
               {sceneCharacters.map(name => (
-                <div
-                  key={name}
-                  onClick={() => insertNpc(name.replace('@', ''))}
-                  style={{
-                    padding: '8px 12px',
-                    cursor: 'pointer',
-                    borderBottom: '1px solid #f3f4f6',
-                    fontSize: '14px'
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f9fafb')}
-                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = '')}
-                >
+                <button key={name} type="button" onClick={() => insertNpc(name)}>
                   {name}
-                </div>
+                </button>
               ))}
             </div>
           )}
         </div>
-        <button
-          type="submit"
-          disabled={disabled || !text.trim()}
-          style={{
-            padding: '10px 20px',
-            borderRadius: '8px',
-            border: 'none',
-            backgroundColor: disabled ? '#9ca3af' : '#2563eb',
-            color: '#fff',
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: disabled ? 'not-allowed' : 'pointer'
-          }}
-        >
-          发送
+        <button className="send-button" type="submit" disabled={disabled || !text.trim()}>
+          {disabled ? '推演中' : '下旨'}
         </button>
       </form>
-    </div>
+    </section>
   );
 };

@@ -15,5 +15,6 @@ public class NarrativeEvent {
     private String token;
     private WorldStateDTO worldState;
     private List<String> sceneCharacters;
+    private EventNodeDTO activeEvent;
     private String error;
 }

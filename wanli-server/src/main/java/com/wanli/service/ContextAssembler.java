@@ -4,7 +4,6 @@ import com.wanli.model.GameSession;
 import com.wanli.model.NpcProfile;
 import com.wanli.repository.GameSessionRepository;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 import java.util.*;
 
@@ -15,15 +14,18 @@ public class ContextAssembler {
     private final KnowledgeGraphService kgService;
     private final WorldStateService wsService;
     private final NpcService npcService;
+    private final EventNodeService eventNodeService;
 
     public ContextAssembler(GameSessionRepository sessionRepo,
                              KnowledgeGraphService kgService,
                              WorldStateService wsService,
-                             NpcService npcService) {
+                             NpcService npcService,
+                             EventNodeService eventNodeService) {
         this.sessionRepo = sessionRepo;
         this.kgService = kgService;
         this.wsService = wsService;
         this.npcService = npcService;
+        this.eventNodeService = eventNodeService;
     }
 
     public String buildSystemPrompt(String sessionId) {
@@ -31,6 +33,7 @@ public class ContextAssembler {
         String stateContext = wsService.buildStateContext(sessionId);
         List<NpcProfile> npcs = npcService.getSceneNpcs(sessionId, "");
         String npcContext = npcService.buildNpcContext(npcs);
+        String eventContext = eventNodeService.buildEventContext(sessionId);
 
         return String.format(""" 
 你是大明万历朝的文字冒险游戏 AI 叙事引擎。玩家穿越成了明神宗朱翊钧（十岁登基）。
@@ -53,8 +56,10 @@ public class ContextAssembler {
 
 %s
 
+%s
+
 ## 短期记忆（最近对话）
-""", stateContext, npcContext);
+""", stateContext, npcContext, eventContext);
     }
 
     public String buildNarrativePrompt(String playerInput, String history, String npcTarget) {

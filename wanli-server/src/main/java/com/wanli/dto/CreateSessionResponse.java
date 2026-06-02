@@ -1,8 +1,8 @@
 package com.wanli.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -10,4 +10,6 @@ import lombok.AllArgsConstructor;
 public class CreateSessionResponse {
     private String sessionId;
     private String message;
+    private EventNodeDTO activeEvent;
+    private WorldStateDTO worldState;
 }
