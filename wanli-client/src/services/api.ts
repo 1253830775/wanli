@@ -1,4 +1,4 @@
-import { PlayerInput, NarrativeEvent, CreateSessionRequest, CreateSessionResponse, WorldState, NpcBrief } from '../types';
+import { PlayerInput, NarrativeEvent, CreateSessionRequest, CreateSessionResponse, WorldState, NpcBrief, CourtSessionState } from '../types';
 
 const API_BASE = '/api/game';
 
@@ -23,7 +23,7 @@ export async function createSession(playerName: string): Promise<CreateSessionRe
 export function streamNarrative(
   input: PlayerInput,
   onToken: (token: string) => void,
-  onState: (state: WorldState, characters: string[], activeEvent?: NarrativeEvent['activeEvent']) => void,
+  onState: (state: WorldState, characters: string[], courtSession?: CourtSessionState) => void,
   onDone: () => void,
   onError: (err: string) => void
 ): AbortController {
@@ -58,8 +58,12 @@ export function streamNarrative(
               if (event.token) onToken(event.token);
               break;
             case 'state':
-              if (event.worldState && event.sceneCharacters) {
-                onState(event.worldState, event.sceneCharacters, event.activeEvent);
+              if (event.worldState) {
+                onState(
+                  event.worldState,
+                  event.sceneCharacters || [],
+                  event.courtSession
+                );
               }
               break;
             case 'done':

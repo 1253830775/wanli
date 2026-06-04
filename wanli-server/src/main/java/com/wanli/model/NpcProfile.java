@@ -38,6 +38,18 @@ public class NpcProfile {
     @Column(name = "status", nullable = false)
     private String status;
 
+    @Column(name = "faction")
+    private String faction;
+
+    @Column(name = "relations", columnDefinition = "TEXT")
+    private String relations;
+
+    @Column(name = "alive")
+    private Boolean alive;
+
+    @Column(name = "historical_death_year")
+    private Integer historicalDeathYear;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

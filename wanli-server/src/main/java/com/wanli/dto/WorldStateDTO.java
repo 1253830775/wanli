@@ -13,5 +13,6 @@ public class WorldStateDTO {
     private Long treasury;
     private Integer publicSupport;
     private Integer militaryLoyalty;
+    private Integer imperialAuthority;
     private String playerLocation;
 }

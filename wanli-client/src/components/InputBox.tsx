@@ -13,7 +13,7 @@ export const InputBox: React.FC<InputBoxProps> = ({ onSend, disabled, sceneChara
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim() || disabled) return;
-    onSend(text.trim());
+    onSend(text);
     setText('');
   };
 

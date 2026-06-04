@@ -1,74 +1,82 @@
 package com.wanli.service;
 
-import com.wanli.model.GameSession;
 import com.wanli.model.NpcProfile;
-import com.wanli.repository.GameSessionRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class ContextAssembler {
 
-    private final GameSessionRepository sessionRepo;
-    private final KnowledgeGraphService kgService;
     private final WorldStateService wsService;
     private final NpcService npcService;
-    private final EventNodeService eventNodeService;
+    private final CourtSessionService courtSessionService;
+    private final KnowledgeGraphService kgService;
 
-    public ContextAssembler(GameSessionRepository sessionRepo,
-                             KnowledgeGraphService kgService,
-                             WorldStateService wsService,
+    public ContextAssembler(WorldStateService wsService,
                              NpcService npcService,
-                             EventNodeService eventNodeService) {
-        this.sessionRepo = sessionRepo;
-        this.kgService = kgService;
+                             CourtSessionService courtSessionService,
+                             KnowledgeGraphService kgService) {
         this.wsService = wsService;
         this.npcService = npcService;
-        this.eventNodeService = eventNodeService;
+        this.courtSessionService = courtSessionService;
+        this.kgService = kgService;
     }
 
     public String buildSystemPrompt(String sessionId) {
-        GameSession session = sessionRepo.findBySessionId(sessionId).orElseThrow();
         String stateContext = wsService.buildStateContext(sessionId);
         List<NpcProfile> npcs = npcService.getSceneNpcs(sessionId, "");
         String npcContext = npcService.buildNpcContext(npcs);
-        String eventContext = eventNodeService.buildEventContext(sessionId);
+        String courtContext = courtSessionService.buildCourtContext(sessionId);
 
-        return String.format(""" 
+        return String.format("""
 你是大明万历朝的文字冒险游戏 AI 叙事引擎。玩家穿越成了明神宗朱翊钧（十岁登基）。
 
 ## 世界设定
-- 时间：隆庆六年（1572 年），明穆宗朱载坖病重托孤
-- 顾命大臣：高拱、张居正、高仪
-- 司礼监掌印太监：冯保
 - 玩家拥有现代知识，可自由决策改变历史
+- 历史事件是素材而非剧本，玩家的决策可以阻止、推迟、改变任何历史事件
+- NPC 有各自的立场和利益，同一议题不同大臣态度不同
 
 ## 叙事规则
-1. 用中文创作沉浸式的历史叙事文本
-2. 根据玩家的输入推进剧情，不要替玩家做决定
-3. 保持历史人物的性格一致性（参考 NPC 档案）
-4. 玩家的决策会引发因果连锁反应，记录在世界状态中
-5. 每轮生成结束后，输出当前场景可交互的 NPC 列表（以 @NPC名 格式）
-6. 如果有关键决策点，在叙事结束后提供 2-4 个选项
+1. 每回合先用 1-2 句简单介绍世界变化、朝局进展或局势后果；环境描写最多 2 句，避免大段铺陈
+2. 不优化、不润色、不代玩家重写输入；严格按玩家原话的意图和信息量推进
+3. 主要用角色之间的对白、追问、试探和玩家面临的抉择推动剧情，不要替玩家做决定
+4. 保持历史人物的性格一致性（参考 NPC 档案）；角色发言请使用“姓名：对白”的格式，便于界面展示头像
+5. 朝堂冲突保持克制——通过措辞和态度体现暗流涌动，而非当庭争吵
+6. 每回合结尾给出 2-4 个简短可选抉择，格式为“可选抉择：①…… ②……”，但玩家仍可自由输入
+7. 裁决阶段结束后，必须在叙事末尾输出状态变更块
+8. 每次朝会结束时，附上"史书对照"
+
+## 状态变更输出格式
+在裁决阶段的叙事末尾，必须输出：
+【状态变更】{"treasury":数值变化,"publicSupport":数值变化,"imperialAuthority":数值变化,"npcAttitudes":{"npcId":态度变化值}}
+- treasury: 国库变化（两），如 -50000 表示花费 5 万两
+- publicSupport: 民望变化（-100~100）
+- imperialAuthority: 帝威变化（-100~100）
+- npcAttitudes: NPC 态度变化（-100~100），key 为 NPC 的英文 ID
 
 %s
 
 %s
 
 %s
-
-## 短期记忆（最近对话）
-""", stateContext, npcContext, eventContext);
+""", stateContext, npcContext, courtContext);
     }
 
     public String buildNarrativePrompt(String playerInput, String history, String npcTarget) {
         StringBuilder sb = new StringBuilder();
-        if (npcTarget != null && !npcTarget.isBlank()) {
-            sb.append("玩家正在与 ").append(npcTarget).append(" 对话。请生成该 NPC 的回应和对白。\n");
+
+        if (history != null && !history.isBlank()) {
+            sb.append("## 近期对话记录\n");
+            sb.append(history).append("\n\n");
         }
+
+        if (npcTarget != null && !npcTarget.isBlank()) {
+            sb.append("玩家正在与 ").append(npcTarget).append(" 对话。请以该 NPC 的回应和双方对白为主，少写环境描写。\n");
+        }
+
         sb.append("玩家行动：").append(playerInput).append("\n");
-        sb.append("请根据以上所有上下文，生成下一段叙事。");
+        sb.append("请根据以上所有上下文，生成下一段叙事；不要改写玩家行动，先简述世界进展，再以对白和抉择为主。");
         return sb.toString();
     }
 }

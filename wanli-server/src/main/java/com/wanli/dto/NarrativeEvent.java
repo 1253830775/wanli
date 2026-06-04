@@ -16,5 +16,6 @@ public class NarrativeEvent {
     private WorldStateDTO worldState;
     private List<String> sceneCharacters;
     private EventNodeDTO activeEvent;
+    private CourtSessionDTO courtSession;
     private String error;
 }

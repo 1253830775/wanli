@@ -3,20 +3,25 @@ export interface WorldState {
   eraName: string;
   treasury: number;
   publicSupport: number;
-  militaryLoyalty: number;
+  imperialAuthority: number;
   playerLocation: string;
 }
 
-export interface EventNode {
-  id: string;
+export interface CourtSessionState {
+  courtNumber: number;
+  phase: string;
+  currentTopicIndex: number;
+  topics: Topic[];
+  inquiryCount: number;
+  isActive: boolean;
+}
+
+export interface Topic {
   title: string;
+  reporter: string;
   description: string;
-  status: 'available' | 'active' | 'completed';
-  currentStep: number;
-  steps: string[];
-  quickActions: string[];
-  triggerHint: string;
-  completionHint: string;
+  historicalNote: string;
+  rulingStatus: string;
 }
 
 export interface NpcBrief {
@@ -33,7 +38,7 @@ export interface NarrativeEvent {
   token?: string;
   worldState?: WorldState;
   sceneCharacters?: string[];
-  activeEvent?: EventNode;
+  courtSession?: CourtSessionState;
   error?: string;
 }
 
@@ -50,6 +55,6 @@ export interface CreateSessionRequest {
 export interface CreateSessionResponse {
   sessionId: string;
   message: string;
-  activeEvent?: EventNode;
+  courtSession?: CourtSessionState;
   worldState?: WorldState;
 }
