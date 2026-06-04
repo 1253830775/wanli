@@ -7,6 +7,7 @@ import { StartScreen } from './components/StartScreen';
 import { CourtSessionPanel } from './components/CourtSessionPanel';
 import { createSession, streamNarrative } from './services/api';
 import { CourtSessionState, WorldState } from './types';
+import { detectCharacterInText } from './utils/characterPortraits';
 import './App.css';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
   const [worldState, setWorldState] = React.useState<WorldState | null>(null);
   const [courtSession, setCourtSession] = React.useState<CourtSessionState | null>(null);
   const [sceneCharacters, setSceneCharacters] = React.useState<string[]>([]);
+  const [activeCharacter, setActiveCharacter] = React.useState<string | undefined>();
   const [error, setError] = React.useState('');
 
   const handleStart = async (playerName: string) => {
@@ -32,15 +34,17 @@ export default function App() {
     }
   };
 
-  const handleSend = (text: string) => {
+  const handleSend = (text: string, explicitTarget?: string) => {
     if (!sessionId || isStreaming) return;
 
+    const targetNpc = explicitTarget || detectCharacterInText(text, sceneCharacters);
+    setActiveCharacter(targetNpc);
     setIsStreaming(true);
     setError('');
     setNarrative(prev => `${prev}\n\n【旨意】${text}\n`);
 
     streamNarrative(
-      { sessionId, text },
+      { sessionId, text, targetNpc },
       (token) => {
         setNarrative(prev => prev + token);
       },
@@ -60,7 +64,7 @@ export default function App() {
   };
 
   const handleSelectNpc = (name: string) => {
-    handleSend(`@${name}`);
+    handleSend(`@${name}`, name);
   };
 
   if (!started) {
@@ -92,7 +96,7 @@ export default function App() {
 
         <section className="game-grid">
           <div className="main-column">
-            <NarrativeStream content={narrative} isStreaming={isStreaming} />
+            <NarrativeStream content={narrative} isStreaming={isStreaming} activeCharacter={activeCharacter} />
             {error && <div className="error-banner">{error}</div>}
             <InputBox
               onSend={handleSend}
