@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+jars/
+
+# Build outputs
+dist/
+build/
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Database files (if needed)
+data/*.db
+data/*.mv.db
+data/*.trace.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Frontend specific
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backend specific
+spring-boot-devtools.properties
