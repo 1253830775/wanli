@@ -28,10 +28,10 @@ logs/
 .env.local
 .env.production
 
-# Database files (if needed)
+# Database files
+*.mv.db
+*.trace.db
 data/*.db
-data/*.mv.db
-data/*.trace.db
 
 # Temporary files
 tmp/
@@ -52,3 +52,7 @@ yarn-error.log*
 
 # Backend specific
 spring-boot-devtools.properties
+
+# Java compiled classes
+target/
+*.class
